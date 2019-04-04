@@ -12,6 +12,7 @@ const getClassNames = classNamesFunction<IWizardStyleProps, IWizardStyles>();
 /** Component for Wizard Base */
 export class WizardBase extends React.Component<IWizardProps, {}> {
   private lastStepIndexShown: number;
+  private clickedForward: boolean;
 
   constructor(props: IWizardProps) {
     super(props);
@@ -30,15 +31,12 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     // if the step to render is already passed in, use that
     const wizardStepProps = this.props.stepToShow ? this.props.stepToShow : getStepToShow(this.props);
 
+    this.clickedForward = this.lastStepIndexShown <= wizardStepProps.index! ? true : false;
     const wizardStyleProps = {
       theme: this.props.theme!,
       isSubStep: wizardStepProps.isSubStep!,
-      isFirstSubStep: wizardStepProps.isFirstSubStep!,
-      clickedForward: this.lastStepIndexShown <= wizardStepProps.index! ? true : false
+      isFirstSubStep: wizardStepProps.isFirstSubStep!
     };
-
-    // Update the step index showing
-    this.lastStepIndexShown = wizardStepProps.index!;
 
     const classNames = getClassNames(this.props.styles!, wizardStyleProps);
 
@@ -48,7 +46,7 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     const contentKey = 'content-' + wizardStepProps.id;
     let animationToApply: string;
 
-    return (
+    const returnElement = (
       <div className={classNames.wizardContentNavContainer}>
         <div className={classNames.subwayNavSection}>
           <SubwayNav steps={steps} wizardComplete={this.props.wizardComplete} />
@@ -59,7 +57,7 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
               {(state: TransitionStatus) => {
                 let hideScroll;
                 if (state === 'entering' || state === 'exiting') {
-                  animationToApply = this._getAnimationToApply(state, wizardStyleProps.clickedForward, classNames);
+                  animationToApply = this._getAnimationToApply(state, classNames);
                   hideScroll = true;
                 } else if (state === 'exited') {
                   hideScroll = false;
@@ -84,11 +82,16 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
         </div>
       </div>
     );
+
+    // Update the step index showing
+    this.lastStepIndexShown = wizardStepProps.index!;
+
+    return returnElement;
   }
 
-  private _getAnimationToApply(state: string, clickedForward: boolean, classNames: IProcessedStyleSet<IWizardStyles>): string {
+  private _getAnimationToApply(state: string, classNames: IProcessedStyleSet<IWizardStyles>): string {
     let animationToApply;
-    if (clickedForward) {
+    if (this.clickedForward) {
       animationToApply = state === 'entering' ? classNames.stepSlideUpEnterActive : classNames.stepSlideUpExitActive;
     } else {
       animationToApply = state === 'entering' ? classNames.stepSlideDownEnterActive : classNames.stepSlideDownExitActive;

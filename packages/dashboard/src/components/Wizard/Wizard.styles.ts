@@ -43,25 +43,9 @@ export const getWizardStyles = (props: IWizardStyleProps): IWizardStyles => {
     },
     contentTitle: {},
     content: {},
-    stepSlideUpEnter: {
-      opacity: 0.1,
-      transform: 'translateY(790px)'
-    },
     stepSlideUpEnterActive: { ...contentSlideUpInAnimation, transform: 'translateY(790px)', opacity: 0 },
-    stepSlideUpExit: {
-      opacity: 1,
-      transform: 'translateY(-790px)'
-    },
     stepSlideUpExitActive: contentSlideUpOutAnimation,
-    stepSlideDownEnter: {
-      opacity: 0.1,
-      transform: 'translateY(-480px)'
-    },
     stepSlideDownEnterActive: contentSlideDownInAnimation,
-    stepSlideDownExit: {
-      opacity: 0,
-      transform: 'translateY(0px)'
-    },
     stepSlideDownExitActive: contentSlideDownOutAnimation
   };
 

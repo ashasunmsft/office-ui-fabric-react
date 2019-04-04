@@ -97,19 +97,11 @@ export interface IWizardStyles {
   content: IStyle;
 
   // React transition classes
-  stepSlideUpEnter: IStyle;
-
   stepSlideUpEnterActive: IStyle;
-
-  stepSlideUpExit: IStyle;
 
   stepSlideUpExitActive: IStyle;
 
-  stepSlideDownEnter: IStyle;
-
   stepSlideDownEnterActive: IStyle;
-
-  stepSlideDownExit: IStyle;
 
   stepSlideDownExitActive: IStyle;
 }
@@ -118,8 +110,6 @@ export interface IWizardStyleProps {
   isSubStep: boolean;
 
   isFirstSubStep: boolean;
-
-  clickedForward: boolean;
 
   theme: ITheme;
 }
