@@ -13,6 +13,8 @@ const getClassNames = classNamesFunction<IWizardStyleProps, IWizardStyles>();
 export class WizardBase extends React.Component<IWizardProps, {}> {
   private lastStepIndexShown: number;
   private clickedForward: boolean;
+  private isSubStep: boolean;
+  private isFirstSubStep: boolean;
 
   constructor(props: IWizardProps) {
     super(props);
@@ -32,6 +34,9 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     const wizardStepProps = this.props.stepToShow ? this.props.stepToShow : getStepToShow(this.props);
 
     this.clickedForward = this.lastStepIndexShown <= wizardStepProps.index! ? true : false;
+    this.isSubStep = wizardStepProps.isSubStep!;
+    this.isFirstSubStep = wizardStepProps.isFirstSubStep!;
+
     const wizardStyleProps = {
       theme: this.props.theme!,
       isSubStep: wizardStepProps.isSubStep!,
@@ -45,6 +50,7 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     const contentTitleKey = 'contentTitle-' + wizardStepProps.id;
     const contentKey = 'content-' + wizardStepProps.id;
     let contentAnimationToApply: string = '';
+    let titleAnimationToApply: string = '';
 
     const returnElement = (
       <div className={classNames.wizardContentNavContainer}>
@@ -57,25 +63,23 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
               {(state: TransitionStatus) => {
                 let hideScroll;
                 if (state === 'entering' || state === 'exiting') {
-                  if (wizardStepProps.isSubStep!) {
+                  titleAnimationToApply = this.isFirstSubStep || !this.isSubStep ? this._getTitleAnimationToApply(state, classNames) : '';
+
+                  if (this.isSubStep) {
                     contentAnimationToApply = this._getSubStepAnimationToApply(state, classNames);
                   } else {
-                    contentAnimationToApply = this._getAnimationToApply(state, classNames);
+                    contentAnimationToApply = this._getContentAnimationToApply(state, classNames);
                   }
                   hideScroll = true;
                 } else if (state === 'exited') {
                   hideScroll = false;
                 }
                 return (
-                  <div
-                    key={contentSectionKey}
-                    className={classNames.contentSection + ` ${contentAnimationToApply}`}
-                    {...hideScroll && { style: { overflow: 'hidden' } }}
-                  >
-                    <div key={contentTitleKey} className={classNames.contentTitle}>
+                  <div key={contentSectionKey} className={classNames.contentSection} {...hideScroll && { style: { overflow: 'hidden' } }}>
+                    <div key={contentTitleKey} className={classNames.contentTitle + ` ${titleAnimationToApply}`}>
                       {wizardStepProps.wizardContent!.contentTitleElement}
                     </div>
-                    <div key={contentKey} className={classNames.content}>
+                    <div key={contentKey} className={classNames.content + ` ${contentAnimationToApply}`}>
                       {wizardStepProps.wizardContent!.content}
                     </div>
                   </div>
@@ -93,12 +97,23 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     return returnElement;
   }
 
-  private _getAnimationToApply(state: string, classNames: IProcessedStyleSet<IWizardStyles>): string {
+  private _getContentAnimationToApply(state: string, classNames: IProcessedStyleSet<IWizardStyles>): string {
     let animationToApply;
     if (this.clickedForward) {
       animationToApply = state === 'entering' ? classNames.stepSlideUpEnterActive : classNames.stepSlideUpExitActive;
     } else {
       animationToApply = state === 'entering' ? classNames.stepSlideDownEnterActive : classNames.stepSlideDownExitActive;
+    }
+
+    return animationToApply;
+  }
+
+  private _getTitleAnimationToApply(state: string, classNames: IProcessedStyleSet<IWizardStyles>): string {
+    let animationToApply;
+    if (this.clickedForward) {
+      animationToApply = state === 'entering' ? classNames.titleSlideUpEnterActive : classNames.titleSlideUpExitActive;
+    } else {
+      animationToApply = state === 'entering' ? classNames.titleSlideDownEnterActive : classNames.titleSlideDownExitActive;
     }
 
     return animationToApply;

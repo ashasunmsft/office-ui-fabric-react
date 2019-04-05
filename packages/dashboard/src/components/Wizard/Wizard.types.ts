@@ -105,6 +105,14 @@ export interface IWizardStyles {
 
   stepSlideDownExitActive: IStyle;
 
+  titleSlideUpEnterActive: IStyle;
+
+  titleSlideUpExitActive: IStyle;
+
+  titleSlideDownEnterActive: IStyle;
+
+  titleSlideDownExitActive: IStyle;
+
   stepSlideLeftEnterActive: IStyle;
 
   stepSlideLeftExitActive: IStyle;
