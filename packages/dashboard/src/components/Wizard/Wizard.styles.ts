@@ -3,7 +3,11 @@ import {
   contentSlideUpOutAnimation,
   contentSlideUpInAnimation,
   contentSlideDownOutAnimation,
-  contentSlideDownInAnimation
+  contentSlideDownInAnimation,
+  contentSlideLeftInAnimation,
+  contentSlideLeftOutAnimation,
+  contentSlideRightInAnimation,
+  contentSlideRightOutAnimation
 } from './Wizard.animation';
 
 export const subwayNavWidth = 303;
@@ -46,7 +50,11 @@ export const getWizardStyles = (props: IWizardStyleProps): IWizardStyles => {
     stepSlideUpEnterActive: { ...contentSlideUpInAnimation, transform: 'translateY(790px)', opacity: 0 },
     stepSlideUpExitActive: contentSlideUpOutAnimation,
     stepSlideDownEnterActive: contentSlideDownInAnimation,
-    stepSlideDownExitActive: contentSlideDownOutAnimation
+    stepSlideDownExitActive: contentSlideDownOutAnimation,
+    stepSlideLeftEnterActive: { ...contentSlideLeftInAnimation, transform: 'translateX(500px)', opacity: 0 },
+    stepSlideLeftExitActive: contentSlideLeftOutAnimation,
+    stepSlideRightEnterActive: contentSlideRightInAnimation,
+    stepSlideRightExitActive: contentSlideRightOutAnimation
   };
 
   return retVal;

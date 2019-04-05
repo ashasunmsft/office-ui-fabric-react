@@ -44,7 +44,7 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     const contentSectionKey = 'contentSection-' + wizardStepProps.id;
     const contentTitleKey = 'contentTitle-' + wizardStepProps.id;
     const contentKey = 'content-' + wizardStepProps.id;
-    let animationToApply: string;
+    let contentAnimationToApply: string = '';
 
     const returnElement = (
       <div className={classNames.wizardContentNavContainer}>
@@ -57,7 +57,11 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
               {(state: TransitionStatus) => {
                 let hideScroll;
                 if (state === 'entering' || state === 'exiting') {
-                  animationToApply = this._getAnimationToApply(state, classNames);
+                  if (wizardStepProps.isSubStep!) {
+                    contentAnimationToApply = this._getSubStepAnimationToApply(state, classNames);
+                  } else {
+                    contentAnimationToApply = this._getAnimationToApply(state, classNames);
+                  }
                   hideScroll = true;
                 } else if (state === 'exited') {
                   hideScroll = false;
@@ -65,7 +69,7 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
                 return (
                   <div
                     key={contentSectionKey}
-                    className={classNames.contentSection + ` ${animationToApply}`}
+                    className={classNames.contentSection + ` ${contentAnimationToApply}`}
                     {...hideScroll && { style: { overflow: 'hidden' } }}
                   >
                     <div key={contentTitleKey} className={classNames.contentTitle}>
@@ -95,6 +99,17 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
       animationToApply = state === 'entering' ? classNames.stepSlideUpEnterActive : classNames.stepSlideUpExitActive;
     } else {
       animationToApply = state === 'entering' ? classNames.stepSlideDownEnterActive : classNames.stepSlideDownExitActive;
+    }
+
+    return animationToApply;
+  }
+
+  private _getSubStepAnimationToApply(state: string, classNames: IProcessedStyleSet<IWizardStyles>): string {
+    let animationToApply;
+    if (this.clickedForward) {
+      animationToApply = state === 'entering' ? classNames.stepSlideLeftEnterActive : classNames.stepSlideLeftExitActive;
+    } else {
+      animationToApply = state === 'entering' ? classNames.stepSlideRightEnterActive : classNames.stepSlideRightExitActive;
     }
 
     return animationToApply;

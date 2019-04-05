@@ -33,6 +33,12 @@ const SLIDE_UP_OUT: string = _createSlideOutY(-480);
 const SLIDE_DOWN_IN: string = _createSlideInY(-480);
 const SLIDE_DOWN_OUT: string = _createSlideOutY(790);
 
+const SLIDE_LEFT_IN: string = _createSlideInX(500);
+const SLIDE_LEFT_OUT: string = _createSlideOutX(-300);
+
+const SLIDE_RIGHT_IN: string = _createSlideInX(-300);
+const SLIDE_RIGHT_OUT: string = _createSlideOutX(500);
+
 function _createSlideInY(fromY: number): string {
   return keyframes({
     from: { transform: `translateY(${fromY}px)` },
@@ -43,6 +49,19 @@ function _createSlideInY(fromY: number): string {
 function _createSlideOutY(toY: number): string {
   return keyframes({
     to: { transform: `translateY(${toY}px)` }
+  });
+}
+
+function _createSlideInX(fromX: number): string {
+  return keyframes({
+    from: { transform: `translateX(${fromX}px)` },
+    to: { transform: `translateX(0px)` }
+  });
+}
+
+function _createSlideOutX(toX: number): string {
+  return keyframes({
+    to: { transform: `translateX(${toX}px)` }
   });
 }
 
@@ -208,4 +227,57 @@ export const contentSlideDownInAnimation = _createAnimation(
   contentInAnimDuration,
   slideInTimingFunction,
   contentInAnimDelay
+);
+
+/* Left / Right Animations */
+
+export const substepAnimationInDurationMilliSec = 580 + testTiming * 1000;
+
+const substepContentInAnimDuration = (0.53 + testTiming).toString() + 's';
+const substepContentInAnimDelay = '0.05s';
+const substepContentFadeInAnimDelay = '0.250s';
+const substepContentOutAnimDuration = (0.5 + testTiming).toString() + 's';
+
+export const contentSlideLeftOutAnimation = _createAnimation(
+  `${FADE_OUT}`,
+  fadeAnimDuration,
+  fadeOutTimingFunction,
+  animationOutDelay,
+  SLIDE_LEFT_OUT,
+  substepContentOutAnimDuration,
+  slideOutTimingFunction,
+  animationOutDelay
+);
+
+export const contentSlideLeftInAnimation = _createAnimation(
+  `${FADE_IN}`,
+  fadeAnimDuration,
+  fadeInTimingFunction,
+  substepContentFadeInAnimDelay,
+  `${SLIDE_LEFT_IN}`,
+  substepContentInAnimDuration,
+  slideInTimingFunction,
+  substepContentInAnimDelay
+);
+
+export const contentSlideRightOutAnimation = _createAnimation(
+  `${FADE_OUT}`,
+  fadeAnimDuration,
+  fadeOutTimingFunction,
+  animationOutDelay,
+  `${SLIDE_RIGHT_OUT}`,
+  substepContentOutAnimDuration,
+  slideOutTimingFunction,
+  animationOutDelay
+);
+
+export const contentSlideRightInAnimation = _createAnimation(
+  `${FADE_IN}`,
+  fadeAnimDuration,
+  fadeInTimingFunction,
+  substepContentFadeInAnimDelay,
+  `${SLIDE_RIGHT_IN}`,
+  substepContentInAnimDuration,
+  slideInTimingFunction,
+  substepContentInAnimDelay
 );
