@@ -11,13 +11,16 @@ import {
   contentSlideLeftInAnimation,
   contentSlideLeftOutAnimation,
   contentSlideRightInAnimation,
-  contentSlideRightOutAnimation
+  contentSlideRightOutAnimation,
+  wizardAnimationDurationMilliSec
 } from './Wizard.animation';
 
 export const subwayNavWidth = 303;
 export const subwayNavPadding = 48;
 
 export const getWizardStyles = (props: IWizardStyleProps): IWizardStyles => {
+  const substepContentSlideUpDelay = props.isFirstSubStep! && props.clickedForward ? wizardAnimationDurationMilliSec : 0;
+
   const retVal: IWizardStyles = {
     wizardContentNavContainer: {
       display: 'flex',
@@ -51,7 +54,12 @@ export const getWizardStyles = (props: IWizardStyleProps): IWizardStyles => {
     },
     contentTitle: {},
     content: {},
-    stepSlideUpEnterActive: { ...contentSlideUpInAnimation, transform: 'translateY(790px)', opacity: 0 },
+    stepSlideUpEnterActive: {
+      ...contentSlideUpInAnimation,
+      transform: 'translateY(790px)',
+      opacity: 0,
+      animationDelay: `${substepContentSlideUpDelay}ms`
+    },
     stepSlideUpExitActive: contentSlideUpOutAnimation,
     stepSlideDownEnterActive: contentSlideDownInAnimation,
     stepSlideDownExitActive: contentSlideDownOutAnimation,
@@ -59,9 +67,14 @@ export const getWizardStyles = (props: IWizardStyleProps): IWizardStyles => {
     titleSlideUpExitActive: titleSlideUpOutAnimation,
     titleSlideDownEnterActive: titleSlideDownInAnimation,
     titleSlideDownExitActive: titleSlideDownOutAnimation,
-    stepSlideLeftEnterActive: { ...contentSlideLeftInAnimation, transform: 'translateX(500px)', opacity: 0 },
+    stepSlideLeftEnterActive: {
+      ...contentSlideLeftInAnimation,
+      transform: 'translateX(500px)',
+      opacity: 0,
+      animationDelay: `${substepContentSlideUpDelay}ms`
+    },
     stepSlideLeftExitActive: contentSlideLeftOutAnimation,
-    stepSlideRightEnterActive: contentSlideRightInAnimation,
+    stepSlideRightEnterActive: { ...contentSlideRightInAnimation, animationDelay: `${substepContentSlideUpDelay}ms` },
     stepSlideRightExitActive: contentSlideRightOutAnimation
   };
 

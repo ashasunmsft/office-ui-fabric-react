@@ -127,5 +127,7 @@ export interface IWizardStyleProps {
 
   isFirstSubStep: boolean;
 
+  clickedForward: boolean;
+
   theme: ITheme;
 }

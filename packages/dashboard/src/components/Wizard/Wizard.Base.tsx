@@ -40,7 +40,8 @@ export class WizardBase extends React.Component<IWizardProps, {}> {
     const wizardStyleProps = {
       theme: this.props.theme!,
       isSubStep: wizardStepProps.isSubStep!,
-      isFirstSubStep: wizardStepProps.isFirstSubStep!
+      isFirstSubStep: wizardStepProps.isFirstSubStep!,
+      clickedForward: this.clickedForward
     };
 
     const classNames = getClassNames(this.props.styles!, wizardStyleProps);
